@@ -6,5 +6,5 @@ export const config = {
   jwtSecret: process.env.JWT_SECRET ?? 'secret',
   freeCurrencyApiKey: process.env.FREECURRENCYAPI_KEY ?? '',
   mongoUri: process.env.MONGO_URI ?? '',
-  corsOrigin: process.env.CORS_ORIGIN ?? 'http://localhost:4200',
+  corsOrigin: process.env.CORS_ORIGIN ?? 'https://client-bqkj.vercel.app',
 };
