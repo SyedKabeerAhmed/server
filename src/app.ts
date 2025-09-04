@@ -15,24 +15,20 @@ import { notFound, errorHandler } from './middleware/errors';
 export function buildApp() {
   const app = express();
 
-  // CORS configuration - more flexible for development
+  // CORS configuration - flexible for development and deployment (Railway)
   app.use((req, res, next) => {
     const origin = req.headers.origin;
     
     // Allow specific origins
+    const envOrigins = (process.env.CORS_ORIGIN ?? '')
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
     const allowedOrigins = [
       'http://localhost:4200',
       'https://client-bqkj.vercel.app',
-      // Add your ngrok URL here or use environment variable
-      process.env.NGROK_URL || 'https://4d98ebcc768b.ngrok-free.app'
+      ...envOrigins,
     ];
-    
-    // Allow ngrok URLs (for development) - more flexible pattern matching
-    const isNgrok = origin && (
-      origin.includes('ngrok-free.app') || 
-      origin.includes('ngrok.io') ||
-      origin.includes('ngrok.app')
-    );
     
     // Allow localhost for development
     const isLocalhost = origin && (
@@ -40,7 +36,7 @@ export function buildApp() {
       origin.startsWith('https://localhost:')
     );
     
-    if (origin && (allowedOrigins.includes(origin) || isNgrok || isLocalhost)) {
+    if (origin && (allowedOrigins.includes(origin) || isLocalhost)) {
       res.header('Access-Control-Allow-Origin', origin);
       console.log(`CORS: Allowing origin: ${origin}`);
     } else if (origin) {
@@ -49,7 +45,7 @@ export function buildApp() {
     
     res.header('Vary', 'Origin');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, ngrok-skip-browser-warning');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.header('Access-Control-Allow-Credentials', 'true');
     
     // Handle preflight requests

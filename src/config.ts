@@ -7,5 +7,4 @@ export const config = {
   freeCurrencyApiKey: process.env.FREECURRENCYAPI_KEY ?? '',
   mongoUri: process.env.MONGO_URI ?? '',
   corsOrigin: process.env.CORS_ORIGIN ?? 'https://client-bqkj.vercel.app',
-  ngrokUrl: process.env.NGROK_URL ?? '',
 };
